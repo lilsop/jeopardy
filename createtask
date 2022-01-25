@@ -1,0 +1,770 @@
+import turtle as trtl
+from typing import FrozenSet
+board = trtl.Turtle()
+wn = trtl.Screen()
+
+total = 0
+
+# Drawing the board
+board.speed(0)
+board.penup()
+board.goto(-350, -350)
+board.right(45)
+board.pensize(100)
+board.pencolor("blue")
+board.pendown()
+board.fillcolor("blue")
+board.begin_fill()
+board.circle(500, 360, 4)
+board.end_fill()
+
+# Drawing the categories
+board.pencolor("yellow")
+board.penup()
+board.goto(-210, -350)
+board.pendown()
+board.pensize(5)
+
+catlist = []
+count = 0
+while (count <= 4):
+    board.setheading(90)
+    board.forward(700)
+    board.penup()
+    board.goto(-210 + 140*count, -350)
+    board.pendown()
+    catlist.append(board.xcor())
+    count = count + 1
+print(catlist)    
+
+# Writing the category names
+categories = ["Quotes", "People", "Weirdness", "Tom Cruise", "Random"]
+n = 0
+board.penup()
+for i in catlist:
+    board.goto(i-135, 300)
+    board.pendown()
+    board.write(categories[0 + n], move=False, align="left", font=("Jeopardy", 18, "bold"))
+    board.penup()
+    n = n + 1
+
+# Drawing the money categories
+gridlist = [250, 130, 10, -110, -230, -350]
+for i in gridlist:
+    board.penup()
+    board.goto(-350, i)
+    board.pendown()
+    board.setheading(0)
+    board.forward(700)
+
+# Drawing the money signs
+moneylistx = [-320, -170, -30, 110, 250]
+moneylisty = [180, 60, -60, -180, -300]
+#   $200
+
+for i in moneylistx:
+    board.penup()
+    board.goto(i, 180)
+    board.pendown()
+    board.write("$200", move=False, align="left", font=("Jeopardy", 20, "bold"))
+
+#   $400
+
+for i in moneylistx:
+    board.penup()
+    board.goto(i, 60)
+    board.pendown()
+    board.write("$400", move=False, align="left", font=("Jeopardy", 20, "bold"))
+
+#   $600
+
+for i in moneylistx:
+    board.penup()
+    board.goto(i, -60)
+    board.pendown()
+    board.write("$600", move=False, align="left", font=("Jeopardy", 20, "bold"))
+
+#   $800
+
+for i in moneylistx:
+    board.penup()
+    board.goto(i, -180)
+    board.pendown()
+    board.write("$800", move=False, align="left", font=("Jeopardy", 20, "bold"))
+
+
+#   $1000
+
+for i in moneylistx:
+    board.penup()
+    board.goto(i, -300)
+    board.pendown()
+    board.write("$1000", move=False, align="left", font=("Jeopardy", 20, "bold"))
+
+####################   End of drawing board   #####################
+
+# Getting final score
+
+def giveascore():
+    board.clear()
+    x.clear()
+    board.penup()
+    board.pencolor("light blue")
+    board.goto(-300, 0)
+    board.pendown()
+    board.write("Your total winnings:", move=False, align="left", font=("Jeopardy", 18, "bold"))
+    board.penup()
+    board.pencolor("red")
+    board.setheading(0)
+    board.forward(400)
+    board.pendown()
+    board.write(total, move=False, align="left", font=("Jeopardy", 18, "bold"))
+
+# Assigning questions
+
+questionlist200 = ["Name the movie: lEt iT gOoOoOoOoO   ", "Who plays Luke Hobbs in the Fast franchise?   ", "Which movie is called Back to the Future even though they go to the past?   ", "In which movie did Tom Cruise hang off of the side of a plane...for real?   ", "Is Die Hard a Christmas movie?   "]
+questionlist400 = ["Name the movie: I love the smell of napalm in the morning!   ", "Which actress starred opposite Brad Pitt in Mr. and Mrs. Smith?   ", "Which movie tries to make a friendship between a high schooler and a disgraced nuclear physicist seem normal?   ", "In which movie did Tom Cruise train for five months as a samurai?   ", "Which actress from the original West Side Story returned for the 2021 version?   "]
+questionlist600 = ["Name the movie: Woman, I am the cavalry.   ", "Which non-black Django Unchained actor was brave enough to say the n-word in front of Samuel L. Jackson (for the movie, of course)?   ", "Which movie implies that a Delorean can actually go 88 mph?   ", "Which Tom Cruise movie did Michael Mann direct? Please don't say Heat.   ", "Which movie established the summer blockbuster?   "]
+questionlist800 = ["Name the movie: We all have it coming, kid.   ", "Which actor declined the role of Neo in the Matrix in order to star in the self-described worst movie of his career?   ", "Which movie involves a mom almost falling in love with her son?   ", "Which movie's catalyst is a young Tom Cruise driving his dad's Porsche into a lake?   ", "What is the only character to see two people win an Oscar for Best Actor for playing him/her?   "]
+questionlist1000 = ["Name the movie: I coulda had class. I coulda been a contender.   ", "Which Bond Girl actress brought Hong Kong martial arts to the James Bond franchise?   ", "Which movie involves a character who would have had such a promising life if a drag race crash hadn't spoiled his music career?   ", "Which movie did Tom Cruise cameo as a fat, old, bald, hairy man with some groovy dance moves?   ", "In which movie did Steven Speilberg help direct the climactic gun fight scene?   "]
+
+# Creating a turtle that draws over categories that have already been completed
+
+x = trtl.Turtle()
+x.pensize(10)
+x.hideturtle()
+def drawanx():  # If answer was wrong
+    x.penup()
+    x.pencolor("red")
+    x.showturtle()
+    x.goto(moneylistx[xindex] - 30, -120*yindex  + 240)
+    x.pendown()
+    x.setheading(315)
+    x.goto(moneylistx[xindex] + 90, -120*yindex + 140)
+    x.penup()
+    x.goto(moneylistx[xindex] + 90, -120*yindex + 240)
+    x.setheading(225)
+    x.pendown()
+    x.goto(moneylistx[xindex] - 30, -120*yindex + 140)
+    x.hideturtle()
+
+def drawacheck():   # If answer was right
+    x.penup()
+    x.pencolor("green")
+    x.showturtle()
+    x.goto(moneylistx[xindex] + 70, -120*yindex + 240)
+    x.pendown()
+    x.setheading(315)
+    x.goto(moneylistx[xindex], -120*yindex + 140)
+    x.setheading(135)
+    x.goto(moneylistx[xindex] - 30, -120*yindex + 190)
+    x.hideturtle()
+
+def eliminate():
+    global prompt
+    if score == 200:
+        questionlist200[xindex] = "You already answered this question!"
+    elif score == 400:
+        questionlist400[xindex] = "You already answered this question!"
+    elif score == 600:
+        questionlist600[xindex] = "You already answered this question!"
+    elif score == 800:
+        questionlist800[xindex] = "You already answered this question!"
+    elif score == 1000:
+        questionlist1000[xindex] = "You already answered this question!"
+
+# Keeping track of questions answered
+
+questionlist = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25"]
+
+# Making key presses match with question
+
+def right():
+    global prompt, score
+    print("Correct")
+    prompt = input("Ready for another question?")
+    questionlist.pop()
+    addscore()
+    print("Your current total: $", total)
+    drawacheck()
+    eliminate()
+    if len(questionlist) == 0:
+        giveascore()
+
+
+def wrong():
+    global prompt, score
+    print("Fool!!!!!!!!!!!")
+    prompt = input("Ready for another question?")
+    questionlist.pop()
+    subscore()
+    print("Your current total: $", total)
+    drawanx()
+    eliminate()
+    if (len(questionlist) == 0):
+        giveascore()
+
+def addscore():
+    global total
+    total = total + score
+
+def subscore():
+    global total
+    total = total - score
+
+# Prompts for first and last names
+
+def answerloopleo():
+    answer = input("First and last name, please:   ")
+    if answer == "LEONARDO DI CAPRIO":
+        right()
+    elif answer == "LEO DI CAPRIO":
+        right()
+    elif answer == "LEONARDO DICAPRIO":
+        right()
+    elif answer == "LEO DICAPRIO":
+        right()
+    else:
+        wrong()
+
+def answerloopwill():
+    answer = input("First and last name, please:   ")
+    if answer == "WILL SMITH":
+        right()
+    else:
+        wrong()
+
+def answerloopjolie():
+    answer = input("First and last name, please:   ")
+    if answer == "ANGELINA JOLIE":
+        right()
+    else:
+        wrong()
+
+def answerloopyeoh():
+    answer = input("First and last name, please:   ")
+    if answer == "MICHELLE YEOH":
+        right()
+    else:
+        wrong()
+
+def answerlooprita():
+    answer = input("First and last name, please:   ")
+    if answer == "RITA MORENO":
+        right()
+    else:
+        wrong()
+
+def answerloopvito():
+    answer = input("First and last name, please:   ")
+    if answer == "VITO CORLEONE":
+        right()
+    else:
+        wrong()
+
+# Prompt for continued questioning
+
+def questioning():
+    global prompt, xindex, yindex, score
+    question = input("Type a category and an amount (ex. RANDOM 200). Note: answers must be in CAPITAL LETTERS!   ")
+
+
+############ $200 ############
+
+# QUOTES 200    
+
+    if question == "QUOTES 200":
+        score = 200
+        xindex = 0
+        yindex = 0
+        if questionlist200[xindex] != "You already answered this question!":
+            answer = input(questionlist200[xindex])
+            if answer == "FROZEN":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist200[xindex])
+            beforequestioning()
+
+# PEOPLE 200
+
+    if question == "PEOPLE 200":
+        score = 200
+        xindex = 1
+        yindex = 0
+        if questionlist200[xindex] != "You already answered this question!":
+            answer = input(questionlist200[xindex])
+            if answer == "DWAYNE JOHNSON":
+                right()
+            elif answer == "THE ROCK":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist200[xindex])
+            beforequestioning()
+
+# WEIRDNESS 200
+    
+    if question == "WEIRDNESS 200":
+        score = 200
+        xindex = 2
+        yindex = 0
+        if questionlist200[xindex] != "You already answered this question!":
+            answer = input(questionlist200[xindex])
+            if answer == "BACK TO THE FUTURE":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist200[xindex])
+            beforequestioning()
+
+# TOM CRUISE 200
+        
+    if question == "TOM CRUISE 200":
+        score = 200
+        xindex = 3
+        yindex = 0
+
+        if questionlist200[xindex] != "You already answered this question!":
+            answer = input(questionlist200[xindex])
+            if answer == "MISSION IMPOSSIBLE 5":
+                right()
+            elif answer == "ROGUE NATION":
+                right()
+            elif answer == "MISSION: IMPOSSIBLE 5":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist200[xindex])
+            beforequestioning()
+
+# RANDOM 200
+        
+    if question == "RANDOM 200":
+        score = 200
+        xindex = 4
+        yindex = 0
+        if questionlist200[xindex] != "You already answered this question!":
+            answer = input(questionlist200[xindex])
+            if answer == "YES":
+                right()
+            elif answer == "y":
+                right()
+            elif answer == "Y":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist200[xindex])
+            beforequestioning()
+
+############### $400 ###############
+
+# QUOTES 400
+
+    if question == "QUOTES 400":
+        score = 400
+        xindex = 0
+        yindex = 1
+        if questionlist400[xindex] != "You already answered this question!":
+            answer = input(questionlist400[xindex])
+            if answer == "APOCALYPSE NOW":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist400[xindex])
+            beforequestioning()
+
+# PEOPLE 400
+
+    if question == "PEOPLE 400":
+        score = 400
+        xindex = 1
+        yindex = 1
+        if questionlist400[xindex] != "You already answered this question!":
+            answer = input(questionlist400[xindex])
+            if answer == "ANGELINA JOLIE":
+                right()
+            elif answer == "JOLIE":
+                answerloopjolie()
+            elif answer == "ANGELINA":
+                answerloopjolie()
+            else:
+                wrong()
+        else:
+            print(questionlist400[xindex])
+            beforequestioning()
+   
+# WEIRDNESS 400
+
+    if question == "WEIRDNESS 400":
+        score = 400
+        xindex = 2
+        yindex = 1
+        if questionlist400[xindex] != "You already answered this question!":
+            answer = input(questionlist400[xindex])
+            if answer == "BACK TO THE FUTURE":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist400[xindex])
+            beforequestioning()
+
+# TOM CRUISE 400
+
+    if question == "TOM CRUISE 400":
+        score = 400
+        xindex = 3
+        yindex = 1
+        if questionlist400[xindex] != "You already answered this question!":
+            answer = input(questionlist400[xindex])
+            if answer == "THE LAST SAMURAI":
+                right()
+            elif answer == "LAST SAMURAI":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist400[xindex])
+            beforequestioning()
+
+# RANDOM 400
+
+    if question == "RANDOM 400":
+        score = 400
+        xindex = 4
+        yindex = 1
+        if questionlist400[xindex] != "You already answered this question!":
+            answer = input(questionlist400[xindex])
+            if answer == "RITA MORENO":
+                right()
+            elif answer == "RITA":
+                answerlooprita()
+            elif answer == "MORENO":
+                answerlooprita()
+            else:
+                wrong()
+        else:
+            print(questionlist400[xindex])
+            beforequestioning()
+
+############### $600 #################
+
+# QUOTES 600
+
+    if question == "QUOTES 600":
+        score = 600
+        xindex = 0
+        yindex = 2
+        if questionlist600[xindex] != "You already answered this question!":
+            answer = input(questionlist600[xindex])
+            if answer == "FURIOUS 7":
+                right()
+            elif answer == "FURIOUS SEVEN":
+                right()
+            elif answer == "FAST AND FURIOUS SEVEN":
+                right()
+            elif answer == "FAST & FURIOUS SEVEN":
+                right()
+            elif answer == "FAST AND FURIOUS 7":
+                right()
+            elif answer == "FAST & FURIOUS 7":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist600[xindex])
+            beforequestioning()
+
+# PEOPLE 600
+
+    if question == "PEOPLE 600":
+        score = 600
+        xindex = 1
+        yindex = 2
+        if questionlist600[xindex] != "You already answered this question!":
+            answer = input(questionlist600[xindex])
+            if answer == "LEO DICAPRIO":
+                right()
+            elif answer == "LEONARDO DICAPRIO":
+                right()
+            elif answer == "LEONARDO DI CAPRIO":
+                right()
+            elif answer == "LEO DI CAPRIO":
+                right()
+            elif answer == "LEO":
+                answerloopleo()
+            elif answer == "LEONARDO":
+                answerloopleo()
+            elif answer == "DI CAPRIO":
+                answerloopleo()
+            elif answer == "DICAPRIO":
+                answerloopleo()
+            else:
+                wrong()
+        else:
+            print(questionlist600[xindex])
+            beforequestioning()
+
+# WEIRDNESS 600
+
+    if question == "WEIRDNESS 600":
+        score = 600
+        xindex = 2
+        yindex = 2
+        if questionlist600[xindex] != "You already answered this question!":
+            answer = input(questionlist600[xindex])
+            if answer == "BACK TO THE FUTURE":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist600[xindex])
+            beforequestioning()
+
+# TOM CRUISE 600
+
+    if question == "TOM CRUISE 600":
+        score = 600
+        xindex = 3
+        yindex = 2
+        if questionlist600[xindex] != "You already answered this question!":
+            answer = input(questionlist600[xindex])
+            if answer == "COLLATERAL":
+                right()
+            elif answer == "HEAT":
+                print("Why did you say Heat?")
+                wrong()
+            else:
+                wrong()
+        else:
+            print(questionlist600[xindex])
+            beforequestioning()
+
+# RANDOM 600
+
+    if question == "RANDOM 600":
+        score = 600
+        xindex = 4
+        yindex = 2
+        if questionlist600[xindex] != "You already answered this question!":
+            answer = input(questionlist600[xindex])
+            if answer == "JAWS":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist600[xindex])
+            beforequestioning()
+
+############### $800 #################
+
+# QUOTES 800
+
+    if question == "QUOTES 800":
+        score = 800
+        xindex = 0
+        yindex = 3
+        if questionlist800[xindex] != "You already answered this question!":
+            answer = input(questionlist800[xindex])
+            if answer == "UNFORGIVEN":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist800[xindex])
+            beforequestioning()
+
+# PEOPLE 800
+
+    if question == "PEOPLE 800":
+        score = 800
+        xindex = 1
+        yindex = 3
+        if questionlist800[xindex] != "You already answered this question!":
+            answer = input(questionlist800[xindex])
+            if answer == "WILL SMITH":
+                right()
+            elif answer == "WILL":
+                answerloopwill()
+            elif answer == "SMITH":
+                answerloopwill()
+            else:
+                wrong()
+        else:
+            print(questionlist800[xindex])
+            beforequestioning()
+
+# WEIRDNESS 800
+
+    if question == "WEIRDNESS 800":
+        score = 800
+        xindex = 2
+        yindex = 3
+        if questionlist800[xindex] != "You already answered this question!":
+            answer = input(questionlist800[xindex])
+            if answer == "BACK TO THE FUTURE":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist800[xindex])
+            beforequestioning()
+
+
+# TOM CRUISE 800
+
+    if question == "TOM CRUISE 800":
+        score = 800
+        xindex = 3
+        yindex = 3
+        if questionlist800[xindex] != "You already answered this question!":
+            answer = input(questionlist800[xindex])
+            if answer == "RISKY BUSINESS":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist800[xindex])
+            beforequestioning()
+
+# RANDOM 800
+
+    if question == "RANDOM 800":
+        score = 800
+        xindex = 4
+        yindex = 3
+        if questionlist800[xindex] != "You already answered this question!":
+            answer = input(questionlist800[xindex])
+            if answer == "VITO CORLEONE":
+                right()
+            elif answer == "VITO":
+                answerloopvito()
+            elif answer == "CORLEONE":
+                answerloopvito()
+            elif answer == "THE GODFATHER":
+                answer = input("Please be more specific--what is this Godfather's name?")
+            elif answer == "GODFATHER":
+                answer = input("Please be more specific--what is this Godfather's name?")
+            else:
+                wrong()
+        else:
+            print(questionlist800[xindex])
+            beforequestioning()
+
+############### $1000 ###############
+
+# QUOTES 1000
+
+    if question == "QUOTES 1000":
+        score = 1000
+        xindex = 0
+        yindex = 4
+        if questionlist1000[xindex] != "You already answered this question!":
+            answer = input(questionlist1000[xindex])
+            if answer == "ON THE WATERFRONT":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist1000[xindex])
+            beforequestioning()
+
+# PEOPLE 1000
+
+    if question == "PEOPLE 1000":
+        score = 1000
+        xindex = 1
+        yindex = 4
+        if questionlist1000[xindex] != "You already answered this question!":
+            answer = input(questionlist1000[xindex])
+            if answer == "MICHELLE YEOH":
+                right()
+            elif answer == "YEOH":
+                answerloopyeoh()
+            elif answer == "MICHELLE":
+                answerloopyeoh()
+            else:
+                wrong()
+        else:
+            print(questionlist1000[xindex])
+            beforequestioning()
+            
+# WEIRDNESS 1000
+
+    if question == "WEIRDNESS 1000":
+        score = 1000
+        xindex = 2
+        yindex = 4
+        if questionlist1000[xindex] != "You already answered this question!":
+            answer = input(questionlist1000[xindex])
+            if answer == "BACK TO THE FUTURE 2":
+                right()
+            elif answer == "BACK TO THE FUTURE II":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist1000[xindex])
+            beforequestioning()
+
+# TOM CRUISE 1000
+
+    if question == "TOM CRUISE 1000":
+        score = 1000
+        xindex = 3
+        yindex = 4
+        if questionlist1000[xindex] != "You already answered this question!":
+            answer = input(questionlist1000[xindex])
+            if answer == "TROPIC THUNDER":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist1000[xindex])
+            beforequestioning()
+
+# RANDOM 1000
+
+    if question == "RANDOM 1000":
+        score = 1000
+        xindex = 4
+        yindex = 4
+        if questionlist1000[xindex] != "You already answered this question!":
+            answer = input(questionlist1000[xindex])
+            if answer == "SCARFACE":
+                right()
+            else:
+                wrong()
+        else:
+            print(questionlist1000[xindex])
+            beforequestioning()
+
+# Prompting the next question
+
+    if prompt == "YES":
+        questioning()
+    elif prompt == "NO":
+        beforequestioning()
+    else:
+        beforequestioning()
+
+def beforequestioning():
+    prompt = input("Ready for a question? (YES/NO)")
+    if prompt == "YES":
+        questioning()
+    elif prompt == "NO":
+        beforequestioning()
+    else:
+        beforequestioning()    
+beforequestioning()
+
+# Making the screen image persist
+
+wn.mainloop()
